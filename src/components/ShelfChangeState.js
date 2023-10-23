@@ -1,13 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const ShelfChangeState = ({ book, onShelfChange }) => {
 	const [shelf, setShelf] = useState(book.shelf);
+
+	useEffect(() => {
+		setShelf(book.shelf);
+	}, [book.shelf]);
 
 	const onSelectChange = (event) => {
 		const value = event.target.value;
 		setShelf(value);
 		onShelfChange(book, value);
 	};
+
 	return (
 		<div className='book-shelf-changer'>
 			<select value={shelf} onChange={onSelectChange}>

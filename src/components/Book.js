@@ -2,8 +2,11 @@ import React from "react";
 import ShelfChangeState from "./ShelfChangeState";
 
 const Book = ({ book, onShelfChange }) => {
+	const { title, authors, imageLinks, id } = book;
+	const thumbnail = imageLinks ? imageLinks.thumbnail : "";
+
 	return (
-		<li key={book.id}>
+		<li key={id}>
 			<div className='book'>
 				<div className='book-top'>
 					<div
@@ -11,15 +14,13 @@ const Book = ({ book, onShelfChange }) => {
 						style={{
 							width: 128,
 							height: 193,
-							backgroundImage: `url(${
-								book.imageLinks ? book.imageLinks.thumbnail : ""
-							})`,
+							backgroundImage: `url(${thumbnail})`,
 						}}
 					/>
 					<ShelfChangeState book={book} onShelfChange={onShelfChange} />
 				</div>
-				<div className='book-title'>{book.title ? book.title : ""}</div>
-				<div className='book-authors'>{book.authors ? book.authors : ""}</div>
+				<div className='book-title'>{title ? title : ""}</div>
+				<div className='book-authors'>{authors ? authors : ""}</div>
 			</div>
 		</li>
 	);

@@ -5,41 +5,36 @@ import { Link } from "react-router-dom";
 
 const SearchPage = ({ changeBookShelf, fetchedBooks }) => {
 	const [term, setTerm] = useState("");
-	const [debouncedTerm, setDebouncedTerm] = useState(term);
 	const [books, setBooks] = useState([]);
 
 	useEffect(() => {
-		const timerID = setTimeout(() => {
-			setDebouncedTerm(term);
-		}, 300);
-
-		return () => {
-			clearTimeout(timerID);
-		};
-	}, [term]);
-
-	useEffect(() => {
-		const searchBooks = (term) => {
+		const searchBooks = async () => {
 			if (term.length !== 0) {
-				BooksAPI.search(term).then((books) => {
-					if (!books.error) {
-						setBooks(books);
+				try {
+					const searchedBooks = await BooksAPI.search(term);
+					if (!searchedBooks.error) {
+						setBooks(searchedBooks);
 					} else {
 						setBooks([]);
 					}
-				});
+				} catch (error) {
+					console.error("Error searching books: ", error);
+					setBooks([]);
+				}
 			} else {
 				setBooks([]);
 			}
 		};
-		searchBooks(term);
-	}, [term, debouncedTerm]);
+		
+		const searchTimer = setTimeout(searchBooks, 300);
+
+		return () => clearTimeout(searchTimer);
+	}, [term]);
 
 	return (
 		<div className='search-books'>
 			<div className='search-books-bar'>
-				<Link className='close-search' to='/'>
-				</Link>
+				<Link className='close-search' to='/' />
 				<div className='search-books-input-wrapper'>
 					<input
 						type='text'
