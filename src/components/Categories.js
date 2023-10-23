@@ -1,23 +1,21 @@
 import React from "react";
-import Shelf from "./Shelf";
+import Book from "./Book";
 
-const Shelves = ({ books, onShelfChange }) => {
-	const shelves = {
-		currentlyReading: "Currently Reading",
-		wantToRead: "Want to Read",
-		read: "Read",
-	};
+function Categories(props) {
+  const { title, books, onShelfChange } = props;
 
-	const renderedShelves = Object.keys(shelves).map((shelf) => (
-		<Shelf
-			key={shelf}
-			fetchedBooks={books.filter((book) => book.shelf === shelf)}
-			shelfTitle={shelves[shelf]}
-			onShelfChange={onShelfChange}
-		/>
-	));
+  return (
+    <div className="bookshelf">
+      <h2 className="bookshelf-title">{title}</h2>
+      <div className="bookshelf-books">
+        <ol className="books-grid">
+          {books.map((book) => (
+            <Book key={book.id} book={book} onShelfChange={onShelfChange} />
+          ))}
+        </ol>
+      </div>
+    </div>
+  );
+}
 
-	return <div className='list-books-content'>{renderedShelves}</div>;
-};
-
-export default Shelves;
+export default Categories;

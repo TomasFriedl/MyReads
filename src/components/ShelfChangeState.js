@@ -1,31 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
-const ShelfChangeState = ({ book, onShelfChange }) => {
-	const [shelf, setShelf] = useState(book.shelf);
+function ShelfChangeState(props) {
+  const { book, onShelfChange } = props;
 
-	useEffect(() => {
-		setShelf(book.shelf);
-	}, [book.shelf]);
+  const handleShelfChange = (event) => {
+    const newShelf = event.target.value;
+    onShelfChange(book, newShelf);
+  };
 
-	const onSelectChange = (event) => {
-		const value = event.target.value;
-		setShelf(value);
-		onShelfChange(book, value);
-	};
+  return (
+    <div className="book-shelf-changer">
+      <select id="shelf" value={book.shelf || "none"} onChange={handleShelfChange}>
+        <option value="none" disabled>
+          Move to...
+        </option>
+        <option value="currentlyReading">Currently Reading</option>
+        <option value="wantToRead">Want to Read</option>
+        <option value="read">Read</option>
+        <option value="none">None</option>
+      </select>
+    </div>
+  );
+}
 
-	return (
-		<div className='book-shelf-changer'>
-			<select value={shelf} onChange={onSelectChange}>
-				<option value='move' disabled>
-					Move to...
-				</option>
-				<option value='currentlyReading'>Currently Reading</option>
-				<option value='wantToRead'>Want to Read</option>
-				<option value='read'>Read</option>
-				<option value='none'>None</option>
-			</select>
-		</div>
-	);
+ShelfChangeState.propTypes = {
+  book: PropTypes.object.isRequired,
+  onShelfChange: PropTypes.func.isRequired,
 };
 
 export default ShelfChangeState;

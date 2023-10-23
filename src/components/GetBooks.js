@@ -1,28 +1,53 @@
-import React from "react";
-import Book from "./Book";
+import React, { useState, useEffect } from "react";
+import * as BooksAPI from "../BooksAPI";
+import Categories from "./Categories";
 
-const GetBooks = ({ searchedBooks, fetchedBooks, changeBookShelf }) => {
-	const renderBooks = searchedBooks.map((book) => {
-		const foundBook = fetchedBooks.find((fetchedBook) => fetchedBook.id === book.id);
-		const shelf = foundBook ? foundBook.shelf : "none";
-		return (
-			<Book
-				key={book.id}
-				book={{ ...book, shelf }}
-				onShelfChange={changeBookShelf}
-			/>
-		);
-	});
+function GetBooks(props) {
+  const [books, setBooks] = useState([]);
+  const [isMounted, setIsMounted] = useState(true);
 
-	return (
-		<ol className='books-grid'>
-			{searchedBooks.length > 0 ? (
-				renderBooks
-			) : (
-				<h1>Sorry, no books found</h1>
-			)}
-		</ol>
-	);
-};
+  useEffect(() => {
+    setIsMounted(true);
+    BooksAPI.getAll().then((books) => {
+      if (isMounted) {
+        setBooks(books);
+      }
+    });
+
+    return () => {
+      setIsMounted(false);
+    };
+  }, [isMounted]);
+
+  const handleShelfChange = (book, shelf) => {
+    BooksAPI.update(book, shelf).then(() => {
+      book.shelf = shelf;
+      const updatedBooks = [...books.filter((b) => b.id !== book.id), book];
+      setBooks(updatedBooks);
+    });
+  };
+
+  const currentlyReading = books.filter(
+    (book) => book.shelf === "currentlyReading"
+  );
+  const wantToRead = books.filter((book) => book.shelf === "wantToRead");
+  const read = books.filter((book) => book.shelf === "read");
+
+  return (
+    <div>
+      <Categories
+        title="Currently Reading"
+        books={currentlyReading}
+        onShelfChange={handleShelfChange}
+      />
+      <Categories
+        title="Want to Read"
+        books={wantToRead}
+        onShelfChange={handleShelfChange}
+      />
+      <Categories title="Read" books={read} onShelfChange={handleShelfChange} />
+    </div>
+  );
+}
 
 export default GetBooks;
