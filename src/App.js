@@ -24,7 +24,7 @@ function App() {
         <GetBooks onShelfChange={handleShelfChange} />
       )}
       <div className="open-search">
-        <button onClick={() => setShowSearchPage(true)}>Add a book</button>
+        <button onClick={() => setShowSearchPage(true)}></button>
       </div>
     </div>
   );

@@ -30,11 +30,11 @@ function SearchBooks(props) {
   return (
     <div className="search-books">
       <div className="search-books-bar">
-        <button  className="close-search" onClick={props.onCloseSearch}>
-          Close
-        </button>
+        <div className="close-search" onClick={props.onCloseSearch}>
+        </div>
         <div className="search-books-input-wrapper">
           <input
+            id="search"
             type="text"
             placeholder="Search by title, author, or ISBN"
             value={query}

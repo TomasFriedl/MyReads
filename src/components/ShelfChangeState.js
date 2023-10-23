@@ -3,7 +3,6 @@ import PropTypes from "prop-types";
 
 function ShelfChangeState(props) {
   const { book, onShelfChange } = props;
-
   const handleShelfChange = (event) => {
     const newShelf = event.target.value;
     onShelfChange(book, newShelf);
@@ -11,7 +10,7 @@ function ShelfChangeState(props) {
 
   return (
     <div className="book-shelf-changer">
-      <select id="shelf" value={book.shelf || "none"} onChange={handleShelfChange}>
+      <select id={`shelf-${book.id}`} value={book.shelf || "none"} onChange={handleShelfChange}>
         <option value="none" disabled>
           Move to...
         </option>
