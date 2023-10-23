@@ -23,7 +23,6 @@ function SearchBooks(props) {
 
   const handleShelfChange = (book, shelf) => {
     BooksAPI.update(book, shelf).then(() => {
-      // Refresh the search results after updating the shelf
       handleSearch(query);
     });
   };

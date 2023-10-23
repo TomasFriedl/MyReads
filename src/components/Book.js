@@ -16,7 +16,7 @@ function Book(props) {
               width: 128,
               height: 193,
               backgroundImage: `url(${thumbnailUrl})`,
-              backgroundColor: thumbnailUrl ? 'transparent' : 'white', // Bílý obrázek, pokud thumbnail není definován
+              backgroundColor: thumbnailUrl ? 'transparent' : 'white',
             }}
           ></div>
           <ShelfChangeState book={book} onShelfChange={onShelfChange} />
