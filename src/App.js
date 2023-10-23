@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./App.css";
 import GetBooks from "./components/GetBooks";
 import SearchBooks from "./components/SearchBooks";
-import { Link } from "react-router-dom";
 
 function App() {
   const [showSearchPage, setShowSearchPage] = useState(false);
@@ -25,7 +24,7 @@ function App() {
         <GetBooks onShelfChange={handleShelfChange} />
       )}
       <div className="open-search">
-        <Link to="/search">Add a book</Link>
+        <button onClick={() => setShowSearchPage(true)}>Add a book</button>
       </div>
     </div>
   );

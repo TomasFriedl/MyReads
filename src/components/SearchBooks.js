@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import * as BooksAPI from "../BooksAPI";
 import Book from "./Book";
-import { Link } from "react-router-dom";
 
 function SearchBooks(props) {
   const [query, setQuery] = useState("");
@@ -31,9 +30,9 @@ function SearchBooks(props) {
   return (
     <div className="search-books">
       <div className="search-books-bar">
-      <Link className="close-search" to="/">
-        Close
-      </Link>
+        <button  className="close-search" onClick={props.onCloseSearch}>
+          Close
+        </button>
         <div className="search-books-input-wrapper">
           <input
             type="text"
