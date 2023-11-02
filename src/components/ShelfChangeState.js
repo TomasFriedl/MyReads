@@ -11,7 +11,7 @@ function ShelfChangeState(props) {
   return (
     <div className="book-shelf-changer">
       <select id={`shelf-${book.id}`} value={book.shelf || "none"} onChange={handleShelfChange}>
-        <option value="none" disabled>
+        <option disabled>
           Move to...
         </option>
         <option value="currentlyReading">Currently Reading</option>

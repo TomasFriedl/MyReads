@@ -13,17 +13,33 @@ function SearchBooks(props) {
         if (results.error) {
           setSearchResults([]);
         } else {
+          const booksArray = Array.isArray(props.books) ? props.books : [];
+          results.forEach((result) => {
+            const matchedBook = booksArray.find((book) => book.id === result.id);
+            if (matchedBook) {
+              result.shelf = matchedBook.shelf;
+            } else {
+              result.shelf = 'none';
+            }
+          });
           setSearchResults(results);
         }
       });
     } else {
       setSearchResults([]);
     }
-  };
-
+  };  
+  
   const handleShelfChange = (book, shelf) => {
+    shelf = shelf || 'none';
     BooksAPI.update(book, shelf).then(() => {
-      handleSearch(query);
+      const updatedResults = searchResults.map((result) => {
+        if (result.id === book.id) {
+          return { ...result, shelf };
+        }
+        return result;
+      });
+      setSearchResults(updatedResults);
     });
   };
 
