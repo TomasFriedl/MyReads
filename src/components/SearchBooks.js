@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as BooksAPI from "../BooksAPI";
 import Book from "./Book";
 
 function SearchBooks(props) {
   const [query, setQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const searchResultsRef = useRef(searchResults);
+  
+  useEffect(() => {
+    searchResultsRef.current = searchResults;
+  }, [searchResults]);
 
   const handleSearch = (query) => {
     setQuery(query);
@@ -13,16 +18,16 @@ function SearchBooks(props) {
         if (results.error) {
           setSearchResults([]);
         } else {
-          const booksArray = Array.isArray(props.books) ? props.books : [];
-          results.forEach((result) => {
-            const matchedBook = booksArray.find((book) => book.id === result.id);
-            if (matchedBook) {
-              result.shelf = matchedBook.shelf;
-            } else {
-              result.shelf = 'none';
-            }
+          BooksAPI.getAll().then((books) => {
+            const updatedResults = results.map((result) => {
+              const matchedBook = books.find((book) => book.id === result.id);
+              if (matchedBook) {
+                return { ...result, shelf: matchedBook.shelf };
+              }
+              return { ...result, shelf: 'none' };
+            });
+            setSearchResults(updatedResults);
           });
-          setSearchResults(results);
         }
       });
     } else {
